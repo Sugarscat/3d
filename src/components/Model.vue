@@ -76,7 +76,7 @@ export default {
     },
     // 创建物体
     createMesh() {
-      let lm = new Promise((resolve, reject) => {
+      let lm = new Promise((resolve) => {
         let loader = new GLTFLoader();
         loader.load('/model/Chair.glb', (gltf) => {
           resolve(gltf);
