@@ -24,9 +24,6 @@ jobs:
      - name: Build Vue
        run: npm run build
 
-     - name: Change
-       run: cd dist && rm -f index.html && mv demo.html index.html
-
      # 查看 workflow 的文档来获取更多信息
      # @see https://github.com/crazy-max/ghaction-github-pages
      - name: Deploy to GitHub Pages
