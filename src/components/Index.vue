@@ -33,8 +33,8 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.name)
-      this.path = "models/" +  this.$route.query.name + ".glb"
+    if (this.$route.query.path)
+      this.path = this.$route.query.path
     if (this.$route.query.cameraX)
       this.cameraX = this.$route.query.cameraX
     if (this.$route.query.cameraY)
