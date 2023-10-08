@@ -29,7 +29,12 @@ export default {
   },
   mounted() {
     this.init()
-    window.addEventListener("click", this.onClick, false);
+    window.onresize = function () {
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize( window.innerWidth, window.innerHeight );
+    };
+
   },
 
   methods: {
@@ -55,7 +60,8 @@ export default {
     },
     // 创建照相机
     createCamera() {
-      this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+      this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight,
+          0.1, 1000)
       this.camera.position.set(200, 200, 200)
       this.camera.lookAt(scene.position)
     },
@@ -107,37 +113,6 @@ export default {
         this.renderer.render(scene, this.camera)
       })
     },
-    onClick(event) {
-      this.raycaster = new THREE.Raycaster();
-      this.mouse = new THREE.Vector2();
-      this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-      this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-      this.raycaster.setFromCamera(this.mouse, this.camera);
-      const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-      if (intersects.length > 0) {
-        const clickedObject = intersects[0].object;
-        if (clickedObject.name === clickedObject.name) {
-          switch (this.num) {
-            case 0:
-              clickedObject.material.color.set(0xff0000)
-              this.num++;
-              break;
-            case 1:
-              clickedObject.material.color.set(0x00ff00)
-              this.num++;
-              break;
-            case 2:
-              clickedObject.material.color.set(0xFFFF00)
-              this.num++;
-              break;
-            default:
-              clickedObject.material.color.set(0x0000FF)
-              this.num -= 3
-          }
-          this.render()
-        }
-      }
-    }
   }
 }
 </script>

@@ -17,10 +17,6 @@ header {
   line-height: 1.5;
 }
 
-main {
-  overflow: hidden;
-}
-
 @media (min-width: 1024px) {
   header {
     display: flex;
