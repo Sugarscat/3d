@@ -5,7 +5,7 @@ import Model from "@/components/Model.vue";
 
 <template>
   <header>
-
+    <div></div>
   </header>
   <main>
     <Model path="models/Chair.glb" :modelY="-10" :scale="30"/>
