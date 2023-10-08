@@ -10,6 +10,7 @@ import Model from "@/components/Model.vue";
   <main>
     <Model :path="path"
            :camera-x="cameraX" :camera-y="cameraY" :camera-z="cameraZ"
+           :camera-fov="cameraFov" :camera-near="cameraNear" :camera-far="cameraFar"
            :model-x="modelX" :model-y="modelY" :model-z="modelZ"
            :scale="scale"/>
   </main>
@@ -26,6 +27,9 @@ export default {
       cameraX: 200,
       cameraY: 200,
       cameraZ: -200,
+      cameraFov: 45,
+      cameraNear: 0.1,
+      cameraFar: 1000,
       modelX: 0,
       modelY: 0,
       modelZ: 0,
@@ -41,6 +45,12 @@ export default {
       this.cameraY = this.$route.query.cameraY
     if (this.$route.query.cameraZ)
       this.cameraZ = this.$route.query.cameraZ
+    if (this.$route.query.cameraFov)
+      this.cameraFov = this.$route.query.cameraFov
+    if (this.$route.query.cameraNear)
+      this.cameraNear = this.$route.query.cameraNear
+    if (this.$route.query.cameraFar)
+      this.cameraFar = this.$route.query.cameraFar
     if (this.$route.query.modelX)
       this.modelX = this.$route.query.modelX
     if (this.$route.query.modelY)

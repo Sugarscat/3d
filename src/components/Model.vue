@@ -31,6 +31,15 @@ export default {
     cameraZ: {
       default: -200,
     },
+    cameraFov: {
+      default: 45,
+    },
+    cameraNear: {
+      default: 0.1,
+    },
+    cameraFar: {
+      default: 1000,
+    },
     modelX: {
       default: 0,
     },
@@ -98,8 +107,8 @@ export default {
     },
     // 创建照相机
     createCamera() {
-      this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight,
-          0.1, 1000)
+      this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight,
+          this.cameraNear, this.cameraFar)
       this.camera.position.set(this.cameraX, this.cameraY, this.cameraZ)
     },
     // 创建物体
