@@ -1,35 +1,73 @@
 
 <template>
-  <div id="content"/>
+  <div id="container"/>
 </template>
 
 <script>
 import * as THREE from 'three'
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls"; //鼠标控制器
+
+import Stats from 'three/addons/libs/stats.module.js';
+
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
 let scene //场景
 export default {
   name: "Model",
+  props: {
+    path: {
+      type: String,
+      required: true,
+    },
+    cameraX: {
+      type: Number,
+      default: 200,
+    },
+    cameraY: {
+      type: Number,
+      default: 200,
+    },
+    cameraZ: {
+      type: Number,
+      default: -200,
+    },
+    modelX: {
+      type: Number,
+      default: 0,
+    },
+    modelY: {
+      type: Number,
+      default: 0,
+    },
+    modelZ: {
+      type: Number,
+      default: 0,
+    },
+    scale: {
+      type: Number,
+      default: 20,
+    }
+  },
   data() {
     return {
+      clock: null,
+      container: null,
+      stats: null,
       camera: null,//照相机
       renderer: null,//渲染器
-      raycaster: null,
       mesh: null,//物体
-      mouse: null,
-      onCLick: null,
-      childList: null,
-      light: null,//灯光
-      cuModel: "", //当前选中模型
-      mouseControls: null, //轨道控制
-      pointLight: null, //点光源
-      ambientLight: null, //环境光
-      num: 0,//点击次数
+      controls: null, //轨道控制
     }
   },
   mounted() {
+    this.clock = new THREE.Clock()
+    this.container = document.getElementById( 'container' );
+    this.stats = new Stats();
+    this.container.appendChild( this.stats.dom );
     this.init()
-    window.onresize = function () {
+    window.onresize = ()=> {
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize( window.innerWidth, window.innerHeight );
@@ -39,80 +77,70 @@ export default {
 
   methods: {
     init() {
+      // 创建渲染器
+      this.createRenderer()
       // 创建场景
       this.createScene()
       // 创建照相机
       this.createCamera()
-      // 创建渲染器
-      this.createRenderer()
-      // 创建灯光
-      this.createLight()
       // 创建控制器
-      this.createOrbitControls();
+      this.createControls();
       // 创建物体
       this.createMesh()
       // 触发
       this.render()
     },
+    // 创建渲染器
+    createRenderer() {
+      this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+			this.renderer.setPixelRatio( window.devicePixelRatio );
+			this.renderer.setSize( window.innerWidth, window.innerHeight );
+			this.container.appendChild( this.renderer.domElement );
+    },
     // 创建场景
     createScene() {
+      const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
       scene = new THREE.Scene()
+      scene.background = new THREE.Color( 0xbfe3dd );
+			scene.environment = pmremGenerator.fromScene( new RoomEnvironment( this.renderer ), 0.04 ).texture;
     },
     // 创建照相机
     createCamera() {
       this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight,
           0.1, 1000)
-      this.camera.position.set(200, 200, 200)
-      this.camera.lookAt(scene.position)
-    },
-    // 创建渲染器
-    createRenderer() {
-      this.renderer = new THREE.WebGLRenderer()
-      this.renderer.setSize(window.innerWidth, window.innerHeight)
-      this.renderer.setClearColor(new THREE.Color(0xffffff))
-      document.getElementById('content').appendChild(this.renderer.domElement)
-    },
-    // 创建灯光
-    createLight() {
-      this.light = new THREE.DirectionalLight({
-        color: 'red'
-      })
-      this.light.position.set(100, 100, 100)
-      scene.add(this.light)
+      this.camera.position.set(this.cameraX, this.cameraY, this.cameraZ)
     },
     // 创建物体
     createMesh() {
-      let lm = new Promise((resolve) => {
-        let loader = new GLTFLoader();
-        loader.load('/model/Chair.glb', (gltf) => {
-          resolve(gltf);
-        })
-      })
-      lm.then((res) => {
-        res.scene.position.set(
-            -100, 0, 0
-        )
-        res.scene.scale.set(20, 20, 20)
-        res.scene.userData = {id: 1, name: 'bear'}
-        scene.add(res.scene)
-        this.render()
-      })
+      const loader = new GLTFLoader();
+      loader.load( this.path, ( gltf )=> {
+				const model = gltf.scene;
+				model.position.set( this.modelX, this.modelY, this.modelZ );
+				model.scale.set(this.scale, this.scale, this.scale );
+				scene.add( model );
+				this.animate();
+			}, undefined, ( e )=> {
+				console.error( e );
+			} );
     },
     //触发
     render() {
       this.renderer.render(scene, this.camera)
     },
     //创建轨道控制
-    createOrbitControls() {
-      //没有缩放阻尼
-      this.mouseControls = new OrbitControls(
-          this.camera,
-          this.renderer.domElement
-      ); //创建控件对象
-      this.mouseControls.addEventListener('change', () => {
-        this.renderer.render(scene, this.camera)
-      })
+    createControls() {
+      this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+			this.controls.target.set( 0, 0.5, 0 );
+			this.controls.update();
+			this.controls.enablePan = false;
+			this.controls.enableDamping = true;
     },
+    animate() {
+      requestAnimationFrame( this.animate );
+      this.controls.update();
+      this.stats.update();
+      this.renderer.render( scene, this.camera );
+    }
   }
 }
 </script>
