@@ -8,7 +8,7 @@ import Model from "@/components/Model.vue";
 
   </header>
   <main>
-    <Model path="models/Chair.glb" :modelY="-10" :scale="40"/>
+    <Model path="models/Chair.glb" :modelY="-10" :scale="30"/>
   </main>
 </template>
 <script>
