@@ -12,7 +12,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import init from "three/addons/offscreen/scene";
 
 let scene //场景
 export default {
