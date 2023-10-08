@@ -5,10 +5,10 @@ import NF404 from "@/components/404.vue";
 
 const routes = [
     {
-        path: '/:path',
+        path: '/:p',
         component: Index,
     },
-    {  path: '/:pathMatch(.*)*',name: '404', component: NF404},
+    {  path: '/:pathMatch(.*)*', name: '404', component: NF404},
 ]
 
 const router = createRouter({
