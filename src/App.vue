@@ -10,13 +10,16 @@ import Model from "@/components/Model.vue";
   <main>
     <Model path="models/Chair.glb" :modelY="-10" :scale="30"/>
   </main>
+  <div class="bottom">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0 DEED</a>
+  </div>
 </template>
 <script>
 export default {
   name: "App",
   data() {
     return {
-      z: -50,
+      
     }
   }
 }
@@ -30,10 +33,20 @@ main {
   overflow: hidden;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-  }
+.bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 10px;
+  background-color: var(--color-transparent);
+  backdrop-filter: blur(10px);
+  border-radius: 3px;
+}
+.bottom a {
+  font-family: roboto condensed;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 </style>
