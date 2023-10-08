@@ -12,6 +12,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import init from "three/addons/offscreen/scene";
 
 let scene //场景
 export default {
@@ -22,31 +23,24 @@ export default {
       required: true,
     },
     cameraX: {
-      type: Number,
       default: 200,
     },
     cameraY: {
-      type: Number,
       default: 200,
     },
     cameraZ: {
-      type: Number,
       default: -200,
     },
     modelX: {
-      type: Number,
       default: 0,
     },
     modelY: {
-      type: Number,
       default: 0,
     },
     modelZ: {
-      type: Number,
       default: 0,
     },
     scale: {
-      type: Number,
       default: 20,
     }
   },
@@ -72,9 +66,7 @@ export default {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize( window.innerWidth, window.innerHeight );
     };
-
   },
-
   methods: {
     init() {
       // 创建渲染器
