@@ -1,6 +1,7 @@
 <script setup>
 
 import Model from "@/components/Model.vue";
+import ElSwitchAppearance from "@/components/ElSwitchAppearance.vue";
 </script>
 
 <template>
@@ -9,8 +10,8 @@ import Model from "@/components/Model.vue";
   </header>
   <main>
     <div class="model-view">
-      <Model class-name="model"
-          :width="this.width" :height="this.height" :path="path"
+      <Model class-name="model" :bg-color="color"
+          :width="width" :height="height" :path="path"
           :camera-x="cameraX" :camera-y="cameraY" :camera-z="cameraZ"
           :camera-fov="cameraFov"
           :model-x="modelX" :model-y="modelY" :model-z="modelZ"
@@ -20,6 +21,10 @@ import Model from "@/components/Model.vue";
       <div class="author-identification">
         <img alt="logo" src="https://sugarscat.cn/favicon.ico"/>
         <span>Sugarscat</span>
+      </div>
+      <div class="theme-switch">
+        <span>Theme</span>
+        <el-switch-appearance/>
       </div>
       <div class="license">
         <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0 DEED</a>
@@ -31,12 +36,15 @@ import Model from "@/components/Model.vue";
   </footer>
 </template>
 <script>
+import {useDark} from "@vueuse/core";
+const isDark = useDark()
 export default {
   name: "Index",
   data() {
     return {
       width: 340,
       height: 50,
+      color: 0xecf0f3,
       path: "models/chair.glb",
       cameraX: 200,
       cameraY: 200,
@@ -54,6 +62,7 @@ export default {
       this.width = 40
     else
       this.width = 340
+    this.changeBg()
     if (this.$route.query.path)
       this.path = this.$route.query.path
     if (this.$route.query.cameraX)
@@ -81,9 +90,19 @@ export default {
       else
         this.width = 340
     }, false);
+    window.addEventListener('mousedown', ()=>{
+      setTimeout(()=>{
+        this.changeBg()
+      }, 250)
+    }, false);
   },
   methods: {
-
+    changeBg() {
+      if (isDark.valueOf().value)
+        this.color = 0x191a1a
+      else
+        this.color = 0xecf0f3
+    }
   }
 }
 </script>
@@ -115,6 +134,7 @@ main {
   gap: 20px;
 }
 
+.theme-switch,
 .author-identification {
   box-shadow: var(--ui-box-shadow2);
   background-color: var(--ui-el-background);
@@ -126,6 +146,10 @@ main {
   gap: 5px;
 }
 
+.theme-switch {
+  justify-content: space-between;
+}
+
 .author-identification img {
   width: 50px;
   height: 50px;
@@ -133,6 +157,7 @@ main {
   border: 2px solid var(--color-background);
 }
 
+.theme-switch span,
 .author-identification span {
   font-size: larger;
   font-weight: bolder;

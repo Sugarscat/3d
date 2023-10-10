@@ -92,6 +92,11 @@ export default {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize( winWidth-this.width, winHeight-this.height );
     }, false);
+    window.addEventListener('mousedown', ()=>{
+      setTimeout(()=>{
+        scene.background = new THREE.Color( this.bgColor );
+      }, 300)
+    }, false);
   },
   methods: {
     init() {
