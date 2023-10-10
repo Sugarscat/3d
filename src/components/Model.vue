@@ -83,7 +83,7 @@ export default {
     this.clock = new THREE.Clock()
     this.container = document.getElementById( 'container' );
     this.stats = new Stats();
-    // this.container.appendChild( this.stats.dom );
+    this.container.appendChild( this.stats.dom );
     this.init()
     window.addEventListener('resize', ()=>{
       const winWidth = window.innerWidth;
