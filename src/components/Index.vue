@@ -99,7 +99,7 @@ export default {
   methods: {
     changeBg() {
       if (isDark.valueOf().value)
-        this.color = 0x191a1a
+        this.color = 0x212121
       else
         this.color = 0xecf0f3
     }

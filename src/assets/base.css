@@ -37,7 +37,7 @@ html.dark {
   4px 4px 4px 0 #2c2e31 inset, -4px -4px 4px 0 #000000 inset;
   --ui-box-shadow2: -8px -4px 8px 0 #101010, 8px 4px 12px 0 #323334;
   --ui-box-shadow3: 4px 4px 4px 0 #2c2e31 inset, -4px -4px 4px 0 #000000 inset;
-  --ui-el-background: #19191a;
+  --ui-el-background: #212121;
 }
 
 *,
