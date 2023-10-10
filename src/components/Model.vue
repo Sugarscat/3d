@@ -1,6 +1,6 @@
 
 <template>
-  <div id="container"/>
+  <div :class="className" id="container"/>
 </template>
 
 <script>
@@ -17,6 +17,22 @@ let scene //场景
 export default {
   name: "Model",
   props: {
+    className: {
+      type: String,
+      default: ''
+    },
+    width: {
+      type: Number,
+      required: true
+    },    
+    height: {
+      type: Number,
+      required: true
+    },
+    bgColor: {
+      type: Number,
+      default: 0xecf0f3
+    },
     path: {
       type: String,
       required: true,
@@ -67,13 +83,15 @@ export default {
     this.clock = new THREE.Clock()
     this.container = document.getElementById( 'container' );
     this.stats = new Stats();
-    this.container.appendChild( this.stats.dom );
+    // this.container.appendChild( this.stats.dom );
     this.init()
-    window.onresize = ()=> {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
+    window.addEventListener('resize', ()=>{
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
+      this.camera.aspect = winWidth / winHeight;
       this.camera.updateProjectionMatrix();
-      this.renderer.setSize( window.innerWidth, window.innerHeight );
-    };
+      this.renderer.setSize( winWidth-this.width, winHeight-this.height );
+    }, false);
   },
   methods: {
     init() {
@@ -92,21 +110,25 @@ export default {
     },
     // 创建渲染器
     createRenderer() {
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
       this.renderer = new THREE.WebGLRenderer( { antialias: true } );
 			this.renderer.setPixelRatio( window.devicePixelRatio );
-			this.renderer.setSize( window.innerWidth, window.innerHeight );
+			this.renderer.setSize( winWidth-this.width, winHeight-this.height );
 			this.container.appendChild( this.renderer.domElement );
     },
     // 创建场景
     createScene() {
       const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
       scene = new THREE.Scene()
-      scene.background = new THREE.Color( 0xbfe3dd );
+      scene.background = new THREE.Color( this.bgColor );
 			scene.environment = pmremGenerator.fromScene( new RoomEnvironment( this.renderer ), 0.04 ).texture;
     },
     // 创建照相机
     createCamera() {
-      this.camera = new THREE.PerspectiveCamera(this.cameraFov, window.innerWidth / window.innerHeight,
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
+      this.camera = new THREE.PerspectiveCamera(this.cameraFov, winWidth / winHeight,
           this.cameraNear, this.cameraFar)
       this.camera.position.set(this.cameraX, this.cameraY, this.cameraZ)
     },
@@ -146,4 +168,7 @@ export default {
 </script>
 
 <style scoped>
+#container {
+  position: relative;
+}
 </style>

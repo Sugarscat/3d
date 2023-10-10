@@ -1,8 +1,7 @@
 @import './base.css';
 
 #app {
-  margin: 0 auto;
-  font-weight: normal;
+  margin: 0;
 }
 
 .green {
@@ -20,9 +19,4 @@ a {
   a:hover {
     color: #00c3eb;
   }
-}
-
-body {
-  display: flex;
-  place-items: center;
 }

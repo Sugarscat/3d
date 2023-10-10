@@ -1,13 +1,18 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-soft: #e8e8e8;
   --vt-c-white-mute: #f2f2f2;
 
   --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
+  --vt-c-black-soft: #212121;
   --vt-c-black-mute: #282828;
   --ui-white-transparent: rgba(255, 255, 255, .6);
+
+  --ui-box-shadow: -8px -4px 8px 0 #ffffff, 8px 4px 12px 0 #d1d9e6,
+  4px 4px 4px 0 #d1d9e6 inset, -4px -4px 4px 0 #ffffff inset;
+  --ui-box-shadow2: -8px -4px 8px 0 #ffffff, 8px 4px 12px 0 #d1d9e6;
+  --ui-el-background: #ecf0f3;
 }
 
 /* semantic color variables for this project */
@@ -29,8 +34,9 @@
 
 body {
   min-height: 100vh;
+  width: 100%;
   color: var(--color-text);
-  background: var(--color-background);
+  background: var(--color-background-soft);
   line-height: 1.6;
   font-family:
     Inter,
