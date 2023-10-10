@@ -88,7 +88,9 @@ export default {
     window.addEventListener('resize', ()=>{
       const winWidth = window.innerWidth;
       const winHeight = window.innerHeight;
-      this.camera.aspect = winWidth / winHeight;
+      const width =  winWidth-this.width
+      const height = winHeight-this.height
+      this.camera.aspect = width/height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize( winWidth-this.width, winHeight-this.height );
     }, false);
@@ -133,7 +135,9 @@ export default {
     createCamera() {
       const winWidth = window.innerWidth;
       const winHeight = window.innerHeight;
-      this.camera = new THREE.PerspectiveCamera(this.cameraFov, winWidth / winHeight,
+      const width =  winWidth-this.width
+      const height = winHeight-this.height
+      this.camera = new THREE.PerspectiveCamera(this.cameraFov, width/height,
           this.cameraNear, this.cameraFar)
       this.camera.position.set(this.cameraX, this.cameraY, this.cameraZ)
     },
